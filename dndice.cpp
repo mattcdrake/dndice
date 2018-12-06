@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <typeinfo>
 #include "iostream"
 #include "string"
 
@@ -11,6 +10,7 @@ std::string errMessage = "Incorrect command line arguments.\n"
 int main(int argc, char **argv) 
 {
     int numDice, faceDice;
+    srand(time(NULL));
 
     /*
      * Do error checking on command line arguments.
@@ -28,9 +28,9 @@ int main(int argc, char **argv)
      */
     bool foundRadix = false;
     int i = 0;
+    std::string temp = "";
     do 
     {
-        std::cout << argv[1][i] << " " << isdigit(argv[1][i]) << std::endl;
         // Error if char is not a digit or 'd'
         if (!isdigit(argv[1][i]) && (argv[1][i] != 'd' && argv[1][i] != 'D'))
         {
@@ -43,24 +43,42 @@ int main(int argc, char **argv)
             printError(argv[1]);
             return 0;
         }
-        // Found the first (and only!) 'd' that should be there
-        else if (argv[1][i] == 'D' || argv[1][i] == 'd')
+        // Add digit to temp string for future conversion to int.
+        if (isdigit(argv[1][i])) 
         {
+            temp.push_back(argv[1][i]);
+        }
+        // Found the first (and only!) 'd' that should be there.
+        // Also convert the temp string into an integer.
+        if (argv[1][i] == 'D' || argv[1][i] == 'd')
+        {
+            numDice = std::stoi(temp);
+            temp = "";
             foundRadix = true;
         }
 
         i++;
     } while (argv[1][i] != '\0');
 
+    faceDice = std::stoi(temp);
+
     /*
-     * At this point, we know that there are only 2 args and argv[1] is an
-     * integer.
+     * At this point, we know that there are only 2 args and argv[1] is in
+     * the correct format. The dice values are stored correctly in numDice
+     * and faceDice.
+     *
+     * Now we calculate the actual die roll.
      */
 
-    for (int i = 0; i < argc; i++) 
+    int total = 0;
+
+    for (int i = 0; i < numDice; i++) 
     {
-        std::cout << argv[i] << std::endl;
+        total += rand() % faceDice + 1;
     }
+
+    std::cout << "The total value of " << argv[1] << " dice are: " << total
+        << std::endl;
 
     return 0;
 }

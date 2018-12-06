@@ -67,7 +67,7 @@ int main(int argc, char **argv)
      * the correct format. The dice values are stored correctly in numDice
      * and faceDice.
      *
-     * Now we calculate the actual die roll.
+     * Now, we calculate the actual die roll.
      */
 
     int total = 0;

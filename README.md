@@ -12,8 +12,4 @@ lowercase or uppercase.
 
 Example: `dndice 5d8`
 
-## TODO
-
-- Create test cases
-
 
